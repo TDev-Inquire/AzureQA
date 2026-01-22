@@ -1,0 +1,32 @@
+id: template_standard_flow
+name: Template Standard Flow
+inputs:
+  transcript_text:
+    type: string
+    default: ""
+    is_chat_input: false
+outputs:
+  output:
+    type: string
+    reference: ${LLM.output}
+nodes:
+- name: LLM
+  type: llm
+  source:
+    type: code
+    path: LLM.jinja2
+  inputs:
+    inputs: ${inputs.transcript_text}
+    deployment_name: <YOUR_DEPLOYMENT_NAME>
+    temperature: 1
+    top_p: 1
+    response_format:
+      type: json_object
+  provider: AzureOpenAI
+  connection: <YOUR_AZURE_OPENAI_CONNECTION_NAME>
+  api: chat
+  module: promptflow.tools.aoai
+  use_variants: false
+node_variants: {}
+environment:
+  python_requirements_txt: requirements.txt
